@@ -78,7 +78,7 @@ For this task, you will require the Keycloak Identity Provider server.
 -	Follow the instruction to start and run the Keycloak IdP server using docker container.
 	- `https://github.com/tosdanoye/dat152-lab/tree/main/keycloak-docker`
 -	When you have started the server, you can obtain an `access\_token` for the admin and normal user by sending a POST request to the keycloak token endpoint:
-	- ```curl -X POST http://localhost:8080/realms/SpringBootKeycloak/protocol/openid-connect/token --data 'grant_type=password&client_id=elibrary-rest-api&username=admin_user&password=berit_pwd'  Or use Postman to send the post request. 
+	- `curl -X POST http://localhost:8080/realms/SpringBootKeycloak/protocol/openid-connect/token --data 'grant_type=password&client_id=elibrary-rest-api&username=admin_user&password=berit_pwd'  Or use Postman to send the post request. 
 
 You will then receive a response with the access_token. 
 - Copy the `access\_token` and replace the `admin.token.test` and `user.token.test` in the `application.properties` with these new values. When they expire, you need to request for new tokens and replace the old ones.
