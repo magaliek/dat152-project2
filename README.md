@@ -12,11 +12,12 @@ Some ways to run your project:
 1.	Run the project from a command prompt (e.g., Mac Terminal). Navigate to the root folder of your project and run the maven command: ./mvnw spring-boot:run
 2.	From your IDE: Right click on ‘LibraryApplication.java’ in the “no.hvl.dat152.rest.ws.main” package and “Run As” Java Application.
 
-### Task #0: (Lab 3)
+### Task 0: (Lab 3)
 -	This oblig #2 builds on Lab #3 with advanced features and functionalities. Therefore, you are expected to have a working solution for the Book and Author REST APIs from Lab #3 (see `https://github.com/tosdanoye/dat152-lab/tree/main/F17-Lab`)
 
 ### Task 1: RESTful API Services 
 Project: library-spring-ws-rest
+
 Support for users to order (borrow) and return a book. You will complete the “TODOs” in the following classes and methods:
 1.	UserService
 	-	updateUser
@@ -78,7 +79,7 @@ For this task, you will require the Keycloak Identity Provider server.
 -	Follow the instruction to start and run the Keycloak IdP server using docker container.
 	- `https://github.com/tosdanoye/dat152-lab/tree/main/keycloak-docker`
 -	When you have started the server, you can obtain an `access\_token` for the admin and normal user by sending a POST request to the keycloak token endpoint:
-	- `curl -X POST http://localhost:8080/realms/SpringBootKeycloak/protocol/openid-connect/token --data 'grant_type=password&client_id=elibrary-rest-api&username=admin_user&password=berit_pwd'  Or use Postman to send the post request. 
+	- ```curl -X POST http://localhost:8080/realms/SpringBootKeycloak/protocol/openid-connect/token --data 'grant_type=password&client_id=elibrary-rest-api&username=admin_user&password=berit_pwd'  Or use Postman to send the post request. 
 
 You will then receive a response with the access_token. 
 - Copy the `access\_token` and replace the `admin.token.test` and `user.token.test` in the `application.properties` with these new values. When they expire, you need to request for new tokens and replace the old ones.
