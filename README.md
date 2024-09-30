@@ -70,7 +70,7 @@ You will then receive a response with the access\_token. Copy the access\_token 
 
 ### TODOs:
 1.	Copy your solutions from Task 2 to this project. 
-2.	Secure the API endpoints you created in Task 0 and Task 1 by using @PreAuthorize(“has Authority(‘…’)”)
+2.	Secure the API endpoints you created in Task 0 and Task 1 by using @PreAuthorize(“hasAuthority(‘…’)”)
 3.	Implement the APIs for super admin to assign and revoke roles (SUPER_ADMIN, ADMIN, USER) from specific users. To achieve this task: You will update the two methods to assign and revoke roles for specific users in the AdminUserController and AdminUserService classes.
 
 The API support should use query parameter to achieve this task such as	`/users/{id}?role=`
@@ -89,12 +89,15 @@ Project: [library-spring-ws-rest-security-oauth](library-spring-ws-rest-security
 For this task, you will require the Keycloak Identity Provider server.
 -	Follow the instruction to start and run the Keycloak IdP server using docker container.
 	- `https://github.com/tosdanoye/dat152-lab/tree/main/keycloak-docker`
--	When you have started the server, you can obtain an `access\_token` for the admin and normal user by sending a POST request to the keycloak token endpoint:
-	- ```curl -X POST http://localhost:8080/realms/SpringBootKeycloak/protocol/openid-connect/token --data 'grant_type=password&client_id=elibrary-rest-api&username=admin_user&password=berit_pwd'  Or use Postman to send the post request. 
+-	When you have started the server, you can obtain an access\_token for the admin and normal user by sending a POST request to the keycloak token endpoint:
+	```
+	curl -X POST http://localhost:8080/realms/SpringBootKeycloak/protocol/openid-connect/token --data 'grant_type=password&client_id=elibrary-rest-api&username=admin_user&password=berit_pwd'
+	``` 
+	Or use Postman to send the post request. 
 
 You will then receive a response with the access_token. 
-- Copy the `access\_token` and replace the `admin.token.test` and `user.token.test` in the `application.properties` with these new values. When they expire, you need to request for new tokens and replace the old ones.
-- Copy your solutions from Task 3 and secure the endpoints by using @PreAuthorize(“has Authority(‘…’)”)
+- Copy the access\_token and replace the `admin.token.test` and `user.token.test` in the `application.properties` with these new values. When they expire, you need to request for new tokens and replace the old ones.
+- Copy your solutions from Task 3 and secure the endpoints by using @PreAuthorize(“hasAuthority(‘…’)”)
 - Test your solutions.
 
 
