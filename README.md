@@ -18,34 +18,45 @@ Some ways to run your project:
 ### Task 1: RESTful API Services 
 Project: library-spring-ws-rest
 
-Support for users to order (borrow) and return a book. You will complete the “TODOs” in the following classes and methods:
+Implement APIs for users to list, order (borrow) and return a book. You will complete the “TODOs” in the following classes:
 1.	UserService
 	-	updateUser
 	-	deleteUser
 	-	createOrdersForUser
-2.	UserController
-	-	getUser
-	-	createUserOrders
 	-	getUserOrder
-	-	returnUserOrder
+	-	getUserOrders
+2.	UserController
+	-	createUser
+	-	updateUser
+	-	deleteUser
+	-	createUserOrder
+	-	deleteUserOrder
+	-	getUserOrder
 3.	OrderService
 	-	deleteOrder
-	-	findByExpiryDate
+	-	findAllOrders()
+	-	findOrdersByExpiryDate
 	-	updateOrder
 4.	OrderController
 	-	getAllBorrowOrders
-	-	returnBookOrder	
+	-	getBorrowOrder
+	-	updateOrder
+	-	deleteBookOrder	
+
+Tips:
+-	Note that there are custom CRUD methods already created in the repositories for each model. Feel free to add new ones, if you have needs for them.
+-	Look at the JUnit tests for clues
 
 ### Task 2: HATEOAS, Pagination and Filtering
 You will provide support to list all ‘orders’ that expire by the specified date (date format: yyyy-MM-dd). Also, your Rest API will provide support to paginate the list of orders (e.g., Pageable).
 
 For these tasks, you will complete the “TODOs” in the following classes and methods:
 1.	OrderService
-	-	findByExpiryDate
+	-	findOrdersByExpiryDate (same as in Task 1)
 2.	OrderController
-	-	getAllBorrowOrders
-3.	Provide HATEOAS support for the createUserOrders such that links to other endpoints and actions possible for the resource are added.
-	-	Add your links to orders in createUserOrders
+	-	getAllBorrowOrders	(same as in Task 1)
+3.	Provide HATEOAS support for the createUserOrder such that there are links to other endpoints with actions possible for the resource.
+	-	Add your links to orders in createUserOrder
 
 ### Task 3: Securing resource endpoints with JWT Access tokens from resource + auth server
 
@@ -60,7 +71,7 @@ You will then receive a response with the access\_token. Copy the access\_token 
 ### TODOs:
 1.	Copy your solutions from Task 2 to this project. 
 2.	Secure the API endpoints you created in Task 0 and Task 1 by using @PreAuthorize(“has Authority(‘…’)”)
-3.	Provide support for super admin to assign and revoke roles (SUPER_ADMIN, ADMIN, USER) from specific users. To achieve this task: You will update the two methods to assign and revoke roles for specific users in the AdminUserController and AdminUserService classes.
+3.	Implement the APIs for super admin to assign and revoke roles (SUPER_ADMIN, ADMIN, USER) from specific users. To achieve this task: You will update the two methods to assign and revoke roles for specific users in the AdminUserController and AdminUserService classes.
 
 The API support should use query parameter to achieve this task such as	`/users/{id}?role=`
 -	Update the method to “Assign role”: updateUserRole(id, role)
@@ -90,7 +101,6 @@ You will then receive a response with the access_token.
 ### Testing
 JUnit tests are provided, and you can run them in your IDE or from a terminal. 
 
-Warning! 
--	Ensure you run each Junit test independently.
+Tips:
 -	Watch out for the specific HttpStatus codes in the Junit tests and ensure that they correspond to what you are returning in the controller methods.
-Use Postman in addition, to support your api testing.
+-	Use Postman in addition, to support your api testing.
