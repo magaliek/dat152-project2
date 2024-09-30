@@ -16,7 +16,7 @@ Some ways to run your project:
 -	This oblig #2 builds on Lab #3 with advanced features and functionalities. Therefore, you are expected to have a working solution for the Book and Author REST APIs from Lab #3 (see `https://github.com/tosdanoye/dat152-lab/tree/main/F17-Lab`)
 
 ### Task 1: RESTful API Services 
-Project: library-spring-ws-rest
+Project: [library-spring-ws-rest](library-spring-ws-rest)
 
 Implement APIs for users to list, order (borrow) and return a book. You will complete the “TODOs” in the following classes:
 1.	UserService
@@ -60,7 +60,7 @@ For these tasks, you will complete the “TODOs” in the following classes and 
 
 ### Task 3: Securing resource endpoints with JWT Access tokens from resource + auth server
 
-Project: library-spring-ws-rest-security
+Project: [library-spring-ws-rest-security](library-spring-ws-rest-security)
 
 First, obtain access tokens for a super\_admin role (berit) and user role (robert) by running the TestSignupLogin.java Junit test. 
 
@@ -84,7 +84,7 @@ The API support should use query parameter to achieve this task such as	`/users/
 
 ### Task 4: Securing resource endpoints with JWT Access tokens from 3rd party OAuth2 Server
 
-Project: library-spring-ws-rest-security-oauth
+Project: [library-spring-ws-rest-security-oauth](library-spring-ws-rest-security-oauth)
 
 For this task, you will require the Keycloak Identity Provider server.
 -	Follow the instruction to start and run the Keycloak IdP server using docker container.
