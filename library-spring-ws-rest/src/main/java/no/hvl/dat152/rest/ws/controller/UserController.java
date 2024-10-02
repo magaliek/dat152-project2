@@ -52,7 +52,6 @@ public class UserController {
 	public ResponseEntity<Object> getUser(@PathVariable("id") Long id) throws UserNotFoundException, OrderNotFoundException{
 		
 		User user = userService.findUser(id);
-		addLinks(user.getOrders());
 		
 		return new ResponseEntity<>(user, HttpStatus.OK);	
 		
