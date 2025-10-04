@@ -58,46 +58,25 @@ For these tasks, you will complete the “TODOs” in the following classes and 
 3.	Provide HATEOAS support for the createUserOrder such that there are links to other endpoints with actions possible for the resource.
 	-	Add your links to orders in createUserOrder
 
-### Task 3: Securing resource endpoints with JWT Access tokens from resource + auth server
 
-Project: [library-spring-ws-rest-security](library-spring-ws-rest-security)
-
-First, obtain access tokens for a super\_admin role (berit) and user role (robert) by running the TestSignupLogin.java Junit test. 
-
-The access\_token can be copied from the console of your IDE. You can also start the application and use Postman to send a POST request with json body {“email”:”berit@email.com”, “password”:”berit\_pwd”} and {“email”:”robert@email.com”, “password”:”robert\_pwd”} to `http://localhost:8090/elibrary/api/v1/auth/login`. 
-
-You will then receive a response with the access\_token. Copy the access\_token and replace the ‘super.admin.token.test’ and ‘user.token.test’ in the “application.properties” with these new values. To make your testing easier, the tokens are configured to expire in 5 days. When they expire, you need to request for new tokens and replace the old ones.
-
-### TODOs:
-1.	Copy your solutions from Task 2 to this project. 
-2.	Secure the API endpoints you created in Task 0 and Task 1 by using @PreAuthorize(“hasAuthority(‘…’)”)
-3.	Implement the APIs for super admin to assign and revoke roles (SUPER_ADMIN, ADMIN, USER) from specific users. To achieve this task: You will update the two methods to assign and revoke roles for specific users in the AdminUserController and AdminUserService classes.
-
-The API support should use query parameter to achieve this task such as	`/users/{id}?role=`
--	Update the method to “Assign role”: updateUserRole(id, role)
--	Update the method to “Revoke role”: deleteUserRole(id, role)
--	Annotate the controller methods with the correct ‘SUPER_ADMIN’ authority (role)
--	Request to your Admin REST APIs will look like:
-	-	Assign role: PUT http://localhost:8090/elibrary/api/v1/admin/users/1?role=ADMIN
-	-	Revoke role: DELETE http://localhost:8090/elibrary/api/v1/admin/users/1?role=ADMIN
--	Test your solutions.
-
-### Task 4: Securing resource endpoints with JWT Access tokens from 3rd party OAuth2 Server
+### Task 3: Securing resource endpoints with JWT Access tokens from 3rd party OAuth2 Server
 
 Project: [library-spring-ws-rest-security-oauth](library-spring-ws-rest-security-oauth)
 
 For this task, you will require the Keycloak Identity Provider server.
 -	Follow the instruction [here](https://github.com/tosdanoye/dat152-lab/tree/main/keycloak-docker) to start and run the Keycloak IdP server using docker container.
 	- `https://github.com/tosdanoye/dat152-lab/tree/main/keycloak-docker`
--	When you have started the server, you can obtain an access\_token for the admin and normal user by sending a POST request to the keycloak token endpoint:
+-	When you have started the server, you can obtain an access\_token for the admin (user2) and normal users (user1 and user3) by sending a POST request to the keycloak token endpoint:
 	```
-	curl -X POST http://localhost:8080/realms/SpringBootKeycloak/protocol/openid-connect/token --data 'grant_type=password&client_id=elibrary-rest-api&username=admin_user&password=berit_pwd'
+	curl -X POST http://localhost:8080/realms/DAT152/protocol/openid-connect/token --data 'grant_type=password&client_id=dat152oblig2&username=user1&password=user1'
 	``` 
 	Or use Postman to send the post request. 
 
 You will then receive a response with the access_token. 
-- Copy the access\_token and replace the `admin.token.test` and `user.token.test` in the `application.properties` with these new values. When they expire, you need to request for new tokens and replace the old ones.
-- Copy your solutions from Task 3 and secure the endpoints by using @PreAuthorize(“hasAuthority(‘…’)”)
+- Copy the access\_token and replace the `admin.token.test` , `user.token.test` , `user3.token.test` in the `application.properties` with these new values. When they expire, you need to request for new tokens and replace the old ones.
+- Copy your solutions from Task 3 and secure the endpoints by using @PreAuthorize annotation
+- All /authors, /books, and /order endpoints can only be accessed by ADMIN user role
+- All /users/{id} endpoints must be accessible to the correct authenticated user or an admin user. For example, user1 can only access /users/1 but not /users/2. An admin must be able to access all the endpoints.
 - Test your solutions.
 
 
