@@ -4,16 +4,15 @@ In this obligatory task, you will complete the implementation of the RESTful API
 
 The obligatory project consists of three projects
 1. [library-spring-ws-rest](library-spring-ws-rest) project
-2. [library-spring-ws-rest-security](library-spring-ws-rest-security) project
-3. [library-spring-ws-rest-security-oauth](library-spring-ws-rest-security-oauth) project
+2. [library-spring-ws-rest-security-oauth](library-spring-ws-rest-security-oauth) project
 
 Preambles: Clone the repository `https://github.com/tosdanoye/dat152-project2.git`. Then, import the maven projects into your preferred IDE. 
 Some ways to run your project:
 1.	Run the project from a command prompt (e.g., Mac Terminal). Navigate to the root folder of your project and run the maven command: ./mvnw spring-boot:run
 2.	From your IDE: Right click on ‘LibraryApplication.java’ in the “no.hvl.dat152.rest.ws.main” package and “Run As” Java Application.
 
-### Task 0: (Lab 3)
--	This oblig #2 builds on Lab #3 with advanced features and functionalities. Therefore, you are expected to have a working solution for the Book and Author REST APIs from Lab #3 (see `https://github.com/tosdanoye/dat152-lab/tree/main/F17-Lab`)
+### Task 0: (Lab 4)
+-	This oblig #2 builds on Lab #4 with advanced features and functionalities. Therefore, you are expected to have a working solution for the Book and Author REST APIs from Lab #4
 
 ### Task 1: RESTful API Services 
 Project: [library-spring-ws-rest](library-spring-ws-rest)
