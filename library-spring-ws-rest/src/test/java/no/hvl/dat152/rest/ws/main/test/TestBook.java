@@ -78,7 +78,14 @@ class TestBook {
 	@DisplayName("JUnit test for @PutMapping(/books/{isbn}) endpoint")
 	@Test
 	public void updateBook_thenOK() throws AuthorNotFoundException, BookNotFoundException {
-
+//		Book b = createRandomBook2();
+//		b = bookService.saveBook(b);
+		
+//		Book book = bookService.findByISBN("abcde1234");
+////		Book book = createRandomBook2();
+//		String newTitle = "Software Engineering_2";
+////		book.setId(b.getId());
+//		book.setTitle(newTitle);
 		String updateOrder = updateBookOrder();
 		
 		Response response = RestAssured.given()
@@ -94,15 +101,19 @@ class TestBook {
 	@Test
 	public void deleteBookByIsbn_thenOK() throws AuthorNotFoundException {
 
-	    Response response = RestAssured.delete(API_ROOT+"/books/qabfde1230");
+		Book book = createRandomBook2();
+		bookService.saveBook(book);
+		
+	    Response response = RestAssured.delete(API_ROOT+"/books/hello_1245");
 	    
 	    assertEquals(HttpStatus.OK.value(), response.getStatusCode());
+	    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), RestAssured.get(API_ROOT+"/books/hello_1245").getStatusCode());
 
 	}
 	
 	private Book createRandomBook() throws AuthorNotFoundException {
 		
-		Author savedAuthor = authorService.findById(4L);
+		Author savedAuthor = authorService.findById(4);
 		
 		Set<Author> authors = new HashSet<Author>();
 		authors.add(savedAuthor);
@@ -110,6 +121,21 @@ class TestBook {
 		Book book = new Book();
 		book.setIsbn("yugbsn_1245");
 		book.setTitle("Book1");
+		book.setAuthors(authors);
+		
+		return book;
+	}
+	
+	private Book createRandomBook2() throws AuthorNotFoundException {
+		
+		Author savedAuthor = authorService.findById(5);
+		
+		Set<Author> authors = new HashSet<Author>();
+		authors.add(savedAuthor);
+		
+		Book book = new Book();
+		book.setIsbn("hello_1245");
+		book.setTitle("Hello_Book1");
 		book.setAuthors(authors);
 		
 		return book;

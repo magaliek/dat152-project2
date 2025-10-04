@@ -111,7 +111,7 @@ class TestUser {
 	    assertEquals("Test_101", response.jsonPath().get("firstname"));
 	}
 
-	@DisplayName("JUnit test for @PostMapping(/users/{id}/orders) endpoint")
+	@DisplayName("JUnit test for @PostMapping(/users/{id}/orders) endpoint + HATEOAS")
 	@Test
 	public void createOrderForUser_thenOK() throws UserNotFoundException {
 
