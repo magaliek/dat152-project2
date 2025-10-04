@@ -4,9 +4,11 @@
 package no.hvl.dat152.rest.ws.security;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -19,6 +21,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import no.hvl.dat152.rest.ws.exceptions.UserNotFoundException;
 import no.hvl.dat152.rest.ws.model.User;
+import no.hvl.dat152.rest.ws.repository.UserRepository;
 
 /**
  * @author tdoy
@@ -26,7 +29,8 @@ import no.hvl.dat152.rest.ws.model.User;
 @Component
 public class AuthTokenFilter extends OncePerRequestFilter {
 	
-	
+	@Autowired
+	private UserRepository userRepository;
 	private static final Logger LOGGER = LoggerFactory.getLogger(AuthTokenFilter.class);
 	
 	@Override
@@ -64,7 +68,19 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 		
 		user.setEmail(email);
 		user.setFirstname(firstname);
-		user.setLastname(lastname);
+		user.setLastname(lastname);	
+		
+		// create user in the library database if it does not exist
+		Optional<User> libuser = userRepository.findByEmail(email);
+		
+		User user1 = libuser.orElse(null);
+		
+		if(libuser.isEmpty()) {
+			user1 = userRepository.save(user);
+			System.out.println(user1);
+		} else {
+			user.setUserid(user1.getUserid());		
+		}
 		
 		
 		return UserDetailsImpl.build(user, oauthJwtToken.getAuthorities());

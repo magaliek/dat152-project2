@@ -58,12 +58,13 @@ class TestOrder {
 		assertTrue(response.jsonPath().getList("isbn").size() == 2);
 	}
 	
-	@DisplayName("JUnit test for @GetMapping(/orders) endpoint")
+	@DisplayName("JUnit test for @GetMapping(/orders) endpoint for unauthorized access role=USER")
 	@Test
 	public void getAllOrders_USER_ROLE_thenOK() {
 		Response response = RestAssured.given()
 				.header("Authorization", "Bearer "+ USER_TOKEN)
 				.get(API_ROOT+"/orders");
+		
 		assertEquals(HttpStatus.FORBIDDEN.value(), response.getStatusCode());
 	}
 	
@@ -107,6 +108,17 @@ class TestOrder {
 	    
 	    assertEquals(HttpStatus.OK.value(), response.getStatusCode());
 
+	}
+	
+	@DisplayName("JUnit test for HATEOAS @GetMapping(/orders/{id}) endpoint")
+	@Test
+	public void getOrderById_HATEOAS_thenOK() {
+
+	    Response response = RestAssured.given()
+	    		.header("Authorization", "Bearer "+ ADMIN_TOKEN)
+	    		.get(API_ROOT+"/orders/2");
+	    
+	    assertTrue(response.jsonPath().get("_links").toString().contains("href"));
 	}
 	
 	private String updateOrderData() {

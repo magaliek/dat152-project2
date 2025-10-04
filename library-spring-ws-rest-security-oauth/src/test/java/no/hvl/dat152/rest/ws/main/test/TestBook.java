@@ -77,7 +77,7 @@ class TestBook {
 	    assertEquals(book.getTitle(), response.jsonPath().get("title"));
 	}
 	
-	@DisplayName("JUnit test for @PostMapping(/books) endpoint")
+	@DisplayName("JUnit test for @PostMapping(/books) endpoint for unauthorized user role")
 	@Test
 	public void createBook_USER_ROLE_thenOK() throws AuthorNotFoundException {
 		Book book = createRandomBook();
@@ -121,25 +121,31 @@ class TestBook {
 	@DisplayName("JUnit test for @DeleteMapping(/books/{isbn}) endpoint")
 	@Test
 	public void deleteBookByIsbn_thenOK() throws AuthorNotFoundException {
-
+		
+		Book book = createRandomBook2();
+		bookService.saveBook(book);
+		
 	    Response response = RestAssured.given()
 				.header("Authorization", "Bearer "+ ADMIN_TOKEN)
-	    		.delete(API_ROOT+"/books/qabfde1230");
+	    		.delete(API_ROOT+"/books/hello_1245");
 	    
 	    assertEquals(HttpStatus.OK.value(), response.getStatusCode());
 	    
 	    // attempt to access the same resource again
-//	    Response resp = RestAssured.given()
-//				.header("Authorization", "Bearer "+ ADMIN_TOKEN)
-//	    		.get(API_ROOT+"/books/qabfde1230");
-//	    
-//	    assertEquals(HttpStatus.NOT_FOUND.value(), resp.getStatusCode());
+	    Response resp = RestAssured.given()
+				.header("Authorization", "Bearer "+ ADMIN_TOKEN)
+	    		.get(API_ROOT+"/books/hello_1245");
+	    
+		int errorCode = response.getStatusCode()== HttpStatus.NOT_FOUND.value() ? 
+				HttpStatus.NOT_FOUND.value() : HttpStatus.INTERNAL_SERVER_ERROR.value();
+		
+	    assertEquals(errorCode, resp.getStatusCode());
 
 	}
 	
 	private Book createRandomBook() throws AuthorNotFoundException {
 		
-		Author savedAuthor = authorService.findById(4L);
+		Author savedAuthor = authorService.findById(4);
 		
 		Set<Author> authors = new HashSet<Author>();
 		authors.add(savedAuthor);
@@ -154,7 +160,7 @@ class TestBook {
 	
 	private Book createRandomBook2() throws AuthorNotFoundException {
 		
-		Author savedAuthor = authorService.findById(5L);
+		Author savedAuthor = authorService.findById(5);
 		
 		Set<Author> authors = new HashSet<Author>();
 		authors.add(savedAuthor);

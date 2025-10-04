@@ -21,4 +21,11 @@ import no.hvl.dat152.rest.ws.repository.AuthorRepository;
 public class AuthorService {
 
 	// TODO copy your solutions from previous tasks!
+	
+	public Author findById(long id) {
+		
+		// TODO
+		
+		return null;
+	}
 }

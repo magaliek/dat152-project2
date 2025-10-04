@@ -24,10 +24,14 @@ class TestUser {
 	private static final String API_ROOT = "http://localhost:8090/elibrary/api/v1";	
 	
 	@Value("${admin.token.test}") 
-	private String ADMIN_TOKEN;
+	private String ADMIN_TOKEN;			// user 2 has ADMIN role
 	
 	@Value("${user.token.test}")
-	private String USER_TOKEN;
+	private String USER_TOKEN;			// user 1 has USER role
+	
+	@Value("${user3.token.test}")
+	private String USER3_TOKEN;			// user 3 has USER role
+	
 	
 	@DisplayName("JUnit test for @GetMapping(/users) endpoint")
 	@Test
@@ -39,12 +43,13 @@ class TestUser {
 		assertTrue(response.jsonPath().getList("userid").size() > 0);
 	}
 	
-	@DisplayName("JUnit test for @GetMapping(/users) endpoint")
+	@DisplayName("JUnit test for @GetMapping(/users) endpoint for unauthorized user role=USER")
 	@Test
 	public void getAllUsers_USER_ROLE_thenOK() {
 		Response response = RestAssured.given()
 				.header("Authorization", "Bearer "+ USER_TOKEN)
 				.get(API_ROOT+"/users");
+		
 		assertEquals(HttpStatus.FORBIDDEN.value(), response.getStatusCode());
 	}
 	
@@ -53,7 +58,7 @@ class TestUser {
 	public void getUserById_thenOK() {
 
 	    Response response = RestAssured.given()
-	    		.header("Authorization", "Bearer "+ ADMIN_TOKEN)
+	    		.header("Authorization", "Bearer "+ USER_TOKEN)
 	    		.get(API_ROOT+"/users/1");
 	    
 	    assertEquals(HttpStatus.OK.value(), response.getStatusCode());
@@ -66,11 +71,22 @@ class TestUser {
 	public void getOrdersOfUser_thenOK() {
 		
 		Response response = RestAssured.given()
-				.header("Authorization", "Bearer "+ ADMIN_TOKEN)
+				.header("Authorization", "Bearer "+ USER_TOKEN)
 				.get(API_ROOT+"/users/1/orders");
 	    
 	    assertEquals(HttpStatus.OK.value(), response.getStatusCode());
 	    assertTrue(response.jsonPath().getList("isbn").size() > 0);
+	}
+	
+	@DisplayName("JUnit test for @GetMapping(/users/{id}/orders) endpoint for unauthorized user")
+	@Test
+	public void getOrdersOfUnauthorizedUser_thenOK() {
+		
+		Response response = RestAssured.given()
+				.header("Authorization", "Bearer "+ USER3_TOKEN)	// user 3 token trying to access user 1 orders
+				.get(API_ROOT+"/users/1/orders");
+	    
+	    assertEquals(HttpStatus.FORBIDDEN.value(), response.getStatusCode());
 	}
 
 	@DisplayName("JUnit test for @PostMapping(/users/{id}/orders) endpoint")
@@ -81,17 +97,15 @@ class TestUser {
 		String order = orderData();
 		
 		Response response = RestAssured.given()
-				.header("Authorization", "Bearer "+ ADMIN_TOKEN)
+				.header("Authorization", "Bearer "+ USER_TOKEN)
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.body(order)
-				.post(API_ROOT+"/users/{id}/orders", 2);
+				.post(API_ROOT+"/users/{id}/orders", 1);			// post order for user 1
 		
 		List<Object> isbns = response.jsonPath().getList("isbn");
-		List<Object> hrefs = response.jsonPath().getList("links");
-		
+
 	    assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
 	    assertTrue(isbns.contains("rstuv1540"));
-	    assertTrue(hrefs.get(0).toString().contains("href"));
 
 	}
 	
@@ -101,15 +115,17 @@ class TestUser {
 
 	    Response response = RestAssured.given()
 				.header("Authorization", "Bearer "+ ADMIN_TOKEN)
-				.delete(API_ROOT+"/users/1");
+				.delete(API_ROOT+"/users/3");
+	    
+	    assertEquals(HttpStatus.OK.value(), response.getStatusCode());
 	    
 	    // attempt to access resource again
 	    Response resp = RestAssured.given()
 	    		.header("Authorization", "Bearer "+ ADMIN_TOKEN)
-	    		.get(API_ROOT+"/users/1");
+	    		.get(API_ROOT+"/users/3");
 	    
-	    assertEquals(HttpStatus.OK.value(), response.getStatusCode());
-	    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), resp.getStatusCode());
+
+	    assertEquals(HttpStatus.FORBIDDEN.value(), resp.getStatusCode());
 
 	}	
 	
@@ -131,7 +147,7 @@ class TestUser {
 		
 		Response response = RestAssured.given()
 				.header("Authorization", "Bearer "+ USER_TOKEN)
-				.delete(API_ROOT+"/users/2/orders/3");
+				.delete(API_ROOT+"/users/1/orders/2");
 	    
 	    assertEquals(HttpStatus.OK.value(), response.getStatusCode());
 

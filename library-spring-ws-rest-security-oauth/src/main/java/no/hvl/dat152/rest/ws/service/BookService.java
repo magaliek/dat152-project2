@@ -24,4 +24,12 @@ import no.hvl.dat152.rest.ws.repository.BookRepository;
 public class BookService {
 
 	// TODO copy your solutions from previous tasks!
+	
+	public Book saveBook(Book book) {
+		
+		// TODO
+		
+		return null;
+		
+	}
 }

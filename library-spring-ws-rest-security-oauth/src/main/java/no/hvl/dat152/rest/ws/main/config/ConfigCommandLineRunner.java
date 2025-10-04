@@ -67,18 +67,20 @@ class ConfigCommandLineRunner implements CommandLineRunner  {
 		authors.add(new Author("Keith", "Ross"));
 		authors.add(new Author("Martin", "Kleppmann"));
 		authors.add(new Author("Cormen", "Leiserson"));
+		authors.add(new Author("Rajkumar", "Buyya"));
 		
 		return authors;
 	}
 	
 	private Iterable<Book> creatDefaultBooks() throws AuthorNotFoundException {
 		
-		Author author1 = authorService.findById(1L);
-		Author author2 = authorService.findById(2L);
-		Author author3 = authorService.findById(3L);
-		Author author4 = authorService.findById(4L);
-		Author author5 = authorService.findById(5L);
-		Author author6 = authorService.findById(6L);
+		Author author1 = authorService.findById(1);
+		Author author2 = authorService.findById(2);
+		Author author3 = authorService.findById(3);
+		Author author4 = authorService.findById(4);
+		Author author5 = authorService.findById(5);
+		Author author6 = authorService.findById(6);
+		Author author7 = authorService.findById(7);
 		
 		Set<Author> authors = new HashSet<Author>();
 		Book book1 = new Book();
@@ -116,6 +118,25 @@ class ConfigCommandLineRunner implements CommandLineRunner  {
 		authors5.add(author5);
 		book5.setAuthors(authors5);
 		
+		Book book6 = new Book();
+		book6.setIsbn("978-1449373320");
+		book6.setTitle("Designing Data-Intensive Applications");
+		book6.addAuthor(author5);
+		
+		Book book7 = new Book();
+		book7.setIsbn("978-0262046305");
+		book7.setTitle("Introduction To Algorithms");
+		book7.addAuthor(author6);
+		
+		Book book8 = new Book();
+		book8.setIsbn("978-0470887998");
+		book8.setTitle("Cloud Computing: Principles and Paradigms");
+		book7.addAuthor(author7);
+		
+		//"978-0470887998","Cloud Computing: Principles and Paradigms"
+		//"978-0262046305","Introduction to Algorithms"
+		//"978-1449373320","Designing Data-Intensive Applications"
+		
 		
 		List<Book> books =  new ArrayList<Book>();		
 		books.add(book1);
@@ -132,10 +153,10 @@ class ConfigCommandLineRunner implements CommandLineRunner  {
 		List<User> users = new ArrayList<>();
 		
 		// user1 (roles = USER)
-		User user1 = new User("robert@email.com","Robert", "Isaac");
+		User user1 = new User("user1@email.com","User1_Firstname", "User1_Lastname");
 		
 		// add roles
-		Role role1 = roleRepository.findById(2).get();
+		Role role1 = roleRepository.findByName("USER");
 		user1.addRole(role1);
 		System.out.println("Role = "+role1.getName());
 		
@@ -147,11 +168,11 @@ class ConfigCommandLineRunner implements CommandLineRunner  {
 		user1.addOrder(order2);
 		
 		
-		//user2 (roles = USER)
-		User user2 = new User("kristin@email.com","Kristin", "Solberg");
+		//user2 (roles = ADMIN)
+		User user2 = new User("user2@email.com","User2_Firstname", "User2_Lastname");
 		
 		// add roles
-		Role role = roleRepository.findById(1).get();
+		Role role = roleRepository.findByName("ADMIN");
 		user2.addRole(role);
 		
 		// add order
@@ -159,13 +180,12 @@ class ConfigCommandLineRunner implements CommandLineRunner  {
 		user2.addOrder(order2_1);
 
 		
-		//user 3  (roles = ADMIN, USER)
-		User user3 = new User("berit@email.com", "Berit", "Jørgensen");
+		//user 3  (roles = USER)
+		User user3 = new User("user3@email.com", "User3_Firstname", "User3_Lastname");
 		// add roles
-		Role role31 = roleRepository.findById(1).get();
-		Role role32 = roleRepository.findById(2).get();
+		Role role31 = roleRepository.findByName("USER");
+
 		user3.addRole(role31);
-		user3.addRole(role32);
 		
 		users.add(user1);
 		users.add(user2);
