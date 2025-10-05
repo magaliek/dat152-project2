@@ -33,35 +33,5 @@ public class OrderService {
 	
 	// TODO copy your solutions from previous tasks!
 	
-	
-	public Order findOrder(Long id) throws OrderNotFoundException, UnauthorizedOrderActionException {
-		
-		verifyPrincipalOfOrder(id);
-		Order order = orderRepository.findById(id)
-				.orElseThrow(()-> new OrderNotFoundException("Order with id: "+id+" not found in the order list!"));
-		
-		return order;
-	}
-	
-	private boolean verifyPrincipalOfOrder(Long id) throws UnauthorizedOrderActionException {
-		
-		JwtAuthenticationToken oauthJwtToken = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-		UserDetailsImpl userPrincipal = (UserDetailsImpl) oauthJwtToken.getDetails();
-		// verify if the user sending request is an ADMIN or SUPER_ADMIN
-		for(GrantedAuthority authority : userPrincipal.getAuthorities()){
-			if(authority.getAuthority().equals("ADMIN")) {
-				return true;
-			}
-		}
-		
-		// otherwise, make sure that the user is the one who initially made the order
-		String email = orderRepository.findEmailByOrderId(id);
-		
-		if(email.equals(userPrincipal.getEmail()))
-			return true;
-		
-		throw new UnauthorizedOrderActionException("Unauthorized order action!");
-
-	}
 
 }
