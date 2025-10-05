@@ -49,7 +49,7 @@ public class UserController {
 	}
 	
 	@GetMapping(value = "/users/{id}")
-	public ResponseEntity<Object> getUser(@PathVariable("id") Long id) throws UserNotFoundException, OrderNotFoundException{
+	public ResponseEntity<Object> getUser(@PathVariable Long id) throws UserNotFoundException, OrderNotFoundException{
 		
 		User user = userService.findUser(id);
 		
