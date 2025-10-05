@@ -75,7 +75,7 @@ You will then receive a response with the access_token.
 - Copy the access\_token and replace the `admin.token.test` , `user.token.test` , `user3.token.test` in the `application.properties` with these new values. When they expire, you need to request for new tokens and replace the old ones.
 - Copy your solutions from Tasks 1 & 2 and secure the endpoints by using @PreAuthorize annotation.
 - All /authors, /books, and /order endpoints can only be accessed by ADMIN user role
-- All /users/{id} endpoints must be accessible only to the correct authenticated user or an admin user. For example, user1 can only access /users/1 but not /users/2. An admin must be able to access all the endpoints.
+- All /users/{id} endpoints must be accessible only to the correct authenticated user or an admin user. For example, user1 (id=1) can only access /users/1 but not /users/2. An admin role must be able to access all the endpoints. Only admin role can access /users endpoint.
 - Test your solutions.
 
 
