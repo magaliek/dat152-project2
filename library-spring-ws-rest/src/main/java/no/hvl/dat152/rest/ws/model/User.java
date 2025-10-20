@@ -37,7 +37,7 @@ public class User extends RepresentationModel<User>{
 	@Column(nullable = false)
 	private String lastname;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true) //everything is simpler with orphanRemoval
 	@JoinColumn(name = "user_id", referencedColumnName = "userid")
 	private Set<Order> orders = new HashSet<>();
 
