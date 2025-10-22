@@ -28,7 +28,8 @@ public class AuthorService {
 	private AuthorRepository authorRepository;
 
     @Autowired
-    private BookRepository bookRepository; //only did this because it seemed from the bookRepository that there was a method perfect for this and meant for this. I thought maybe the teacher wanted me to do this
+    private BookRepository bookRepository;  //only did this because it seemed from the bookRepository that there
+                                            // was a method perfect for this and meant for this. I thought maybe the teacher wanted me to do this
 		
 	
 	public Author findById(int id) throws AuthorNotFoundException {

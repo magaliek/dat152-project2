@@ -62,7 +62,6 @@ public class UserService {
         return userRepository.findById(id).map(existingUser -> {
             existingUser.setFirstname(user.getFirstname());
             existingUser.setLastname(user.getLastname());
-            existingUser.setOrders(user.getOrders());
             return userRepository.save(existingUser);
         }).orElseThrow(() -> new UserNotFoundException("User with id: "+id+" not found"));
     }
