@@ -1,11 +1,12 @@
 /**
- * 
+ *
  */
 package no.hvl.dat152.rest.ws.service;
 
 import java.util.List;
 import java.util.Set;
 
+import no.hvl.dat152.rest.ws.exceptions.AuthorNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,13 +24,54 @@ import no.hvl.dat152.rest.ws.repository.BookRepository;
 @Service
 public class BookService {
 
-	// TODO copy your solutions from previous tasks!
-	
-	public Book saveBook(Book book) {
-		
-		// TODO
-		
-		return null;
-		
-	}
+    @Autowired
+    private BookRepository bookRepository;
+
+
+    public Book saveBook(Book book) {
+
+        return bookRepository.save(book);
+
+    }
+
+    public List<Book> findAll(){
+
+        return (List<Book>) bookRepository.findAll();
+
+    }
+
+
+    public Book findByISBN(String isbn) throws BookNotFoundException {
+
+        Book book = bookRepository.findByIsbn(isbn)
+                .orElseThrow(() -> new BookNotFoundException("Book with isbn = "+isbn+" not found!"));
+
+        return book;
+    }
+
+    public Book updateBook(Book book, String isbn) throws BookNotFoundException {
+        return bookRepository.findByIsbn(isbn).map(existingBook -> {
+            existingBook.setAuthors(book.getAuthors());
+            existingBook.setTitle(book.getTitle());
+            return bookRepository.save(existingBook);
+        }).orElseThrow(() -> new BookNotFoundException("Book with isbn = "+isbn+" not found!"));
+    }
+
+    public List<Book> findAllPaginate(Pageable page) {
+        return bookRepository.findAllPaginate(page.getPageSize(), (int) page.getOffset());
+    }
+
+    public Set<Author> findAuthorsOfBookByISBN(String isbn) throws BookNotFoundException {
+        bookRepository.findByIsbn(isbn).orElseThrow(()->new BookNotFoundException("Book with isbn = "+isbn+" not found!"));
+        return bookRepository.findByIsbn(isbn).get().getAuthors();
+    }
+
+    public void deleteById(long id) throws BookNotFoundException {
+        bookRepository.deleteById(id); //maybe should have checked with ifpresent but then i cant use deletebyid
+    }
+
+    public void deleteByISBN(String isbn) {
+        bookRepository.findByIsbn(isbn).ifPresent(bookRepository::delete);
+    }
+
 }

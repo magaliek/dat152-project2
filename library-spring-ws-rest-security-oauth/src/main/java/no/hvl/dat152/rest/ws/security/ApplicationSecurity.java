@@ -32,21 +32,22 @@ public class ApplicationSecurity {
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		
+
 		http.csrf(csrf->csrf.disable());
 		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-		http.authorizeHttpRequests(authorize -> 
+		http.authorizeHttpRequests(authorize ->
 				authorize.anyRequest().authenticated());
 		http.oauth2ResourceServer(oauth2 -> oauth2
 				.jwt(jwtconfig -> jwtconfig.jwtAuthenticationConverter(jwt -> RoleConverter(jwt))));
-		
+
 		http.addFilterAfter(authTokenFilter, BearerTokenAuthenticationFilter.class);
-		
-		return http.build();		
+
+		return http.build();
 	}
 
-	
-	private JwtAuthenticationToken RoleConverter(Jwt jwt) {
+
+
+    private JwtAuthenticationToken RoleConverter(Jwt jwt) {
 		
 		// initialize
 		Collection<GrantedAuthority> rgrantedAuthorities = null;
